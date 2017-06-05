@@ -4,7 +4,7 @@ A collection of common cryptographic recipes.
 
 ## TODO
 
-* [ ] dhparams
+* [x] dhparams
 * [ ] snakeoil generation
 * [ ] ???
 * [ ] profit
