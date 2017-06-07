@@ -12,9 +12,9 @@ attributes in a role or environment file.
 ## Minor Attributes
 * `default['tls']['dhparams']['bits'] = N` Needs to be an integer. This changes
   the bit number used in generation. Defaults to `2048`.
-* `default['tls']['snakeoil']['certs'][...]['bits'] = []` Needs to be an
+* `default['tls']['snakeoil']['certs'][...]['bits'] = N` Needs to be an
   integer. This changes the bit number used in generation. Defaults to `2048`.
-* `default['tls']['snakeoil']['certs'][...]['days'] = []` Needs to be an
+* `default['tls']['snakeoil']['certs'][...]['days'] = N` Needs to be an
   integer. This changes the expiration length, in days, of a certificate. Defaults to
 `365` days.
 
