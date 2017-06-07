@@ -3,6 +3,10 @@
 # Recipe:: common
 #
 
+package node['tls']['packages'] do
+    action :install
+end
+
 dirs = [
     node['tls']['container'],
     node['tls']['cert_path'],

@@ -1,3 +1,5 @@
+default['tls']['packages'] = 'openssl'
+
 default['tls']['container'] = '/etc/ssl'
 default['tls']['cert_path'] = "#{node['tls']['container']}/certs"
 default['tls']['key_path']  = "#{node['tls']['container']}/private"
