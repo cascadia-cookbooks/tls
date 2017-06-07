@@ -15,10 +15,24 @@ platforms:
 
 suites:
   - name: default
-    run_list: cop_tls::dhparams
+    run_list:
+    - recipe[cop_tls::dhparams]
+    - recipe[cop_tls::snakeoil]
     attributes:
         tls:
             dhparams:
                 files:
                     - /etc/ssl/certs/dhparams.pem
                     - /tmp/dhparams.pem 
+            snakeoil:
+                certs:
+                    test.localhost.com:
+                        bits: 2048
+                        days: 400
+                        country: US
+                        state: Oregon
+                        city: Portland
+                        company: Copious
+                        section: Devoops
+                        hostname: test.localhost.com
+                        contact: satan@copiousdev.com

@@ -3,20 +3,14 @@
 # Recipe:: common
 #
 
-directory node['tls']['container'] do
-    owner  'root'
-    group  'root'
-    mode   0755
-    action :create
-end
-
-dirs = %w(
-    certs
-    private
-)
+dirs = [
+    node['tls']['container'],
+    node['tls']['cert_path'],
+    node['tls']['key_path']
+]
 
 dirs.each do |dir|
-    directory "#{node['tls']['container']}/#{dir}" do
+    directory dir do
         owner  'root'
         group  'root'
         mode   0755
