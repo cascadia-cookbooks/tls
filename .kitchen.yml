@@ -21,6 +21,7 @@ suites:
     attributes:
         tls:
             dhparams:
+                bits: 512
                 files:
                     - /etc/ssl/certs/dhparams.pem
                     - /tmp/dhparams.pem 
