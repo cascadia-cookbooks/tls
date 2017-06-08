@@ -5,8 +5,10 @@
 
 include_recipe 'cop_tls::common'
 
-if node['tls']['snakeoil']['certs']
-    node['tls']['snakeoil']['certs'].each do |file,data|
+certs = node['tls']['snakeoil']['certs']
+
+unless certs.nil? || certs.nil?
+    certs.each do |file,data|
         cert = "#{node['tls']['cert_path']}/#{file}.crt"
         key  = "#{node['tls']['key_path']}/#{file}.key"
         bits = data['bits'] || '2048'
