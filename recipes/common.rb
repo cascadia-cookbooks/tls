@@ -10,7 +10,6 @@ end
 dirs = [
     node['tls']['container'],
     node['tls']['cert_path'],
-    node['tls']['key_path']
 ]
 
 dirs.each do |dir|
@@ -20,4 +19,11 @@ dirs.each do |dir|
         mode   0755
         action :create
     end
+end
+
+directory node['tls']['key_path'] do
+    owner  'root'
+    group  'root'
+    mode   0700
+    action :create
 end
