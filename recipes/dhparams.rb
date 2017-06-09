@@ -11,5 +11,6 @@ node['tls']['dhparams']['files'].each do |file|
         creates file
         # NOTE: 5min timeout should be enough
         timeout 300
+        sensitive true
     end
 end
