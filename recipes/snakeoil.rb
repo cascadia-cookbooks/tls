@@ -14,19 +14,42 @@ unless certs.nil? || certs.nil?
         bits = data['bits'] || '2048'
         days = data['days'] || '365'
 
+        file "#{file} TLS config" do
+            path    "/tmp/tls.conf"
+            content "
+[req]
+x509_extensions = v3_req
+distinguished_name = dn
+default_bits = 2048
+prompt = no
+default_md = sha256
+
+[dn]
+C = #{data['country']}
+ST = #{data['state']}
+L = #{data['city']}
+O = #{data['company']}
+OU = #{data['section']}
+emailAddress = #{data['contact']}
+CN = #{data['hostname']}
+
+[v3_req]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = #{data['hostname']}"
+        end
+
         execute "generating #{file}" do
             command "
-    answers() {
-            echo #{data['country']}
-            echo #{data['state']}
-            echo #{data['city']}
-            echo #{data['company']}
-            echo #{data['section']}
-            echo #{data['hostname']}
-            echo #{data['contact']}
-    }
-
-    answers | /usr/bin/openssl req -newkey rsa:#{bits} -keyout #{key} -nodes -x509 -days #{days} -out #{cert}"
+/usr/bin/openssl req -x509 \
+    -sha256                \
+    -newkey rsa:#{bits}    \
+    -keyout #{key}         \
+    -nodes                 \
+    -days #{days}          \
+    -config /tmp/tls.conf  \
+    -out #{cert}"
             creates cert
         end
 
