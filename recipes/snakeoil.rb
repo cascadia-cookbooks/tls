@@ -30,7 +30,6 @@ ST = #{data['state']}
 L = #{data['city']}
 O = #{data['company']}
 OU = #{data['section']}
-emailAddress = #{data['contact']}
 CN = #{data['hostname']}
 
 [v3_req]
