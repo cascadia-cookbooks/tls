@@ -14,19 +14,45 @@ unless certs.nil? || certs.nil?
         bits = data['bits'] || '2048'
         days = data['days'] || '365'
 
+        file "#{file} TLS config" do
+            path    "/tmp/tls.conf"
+            content "
+[ req ]
+prompt = no
+default_bits = 2048
+encrypt_key = no
+default_md = sha256
+distinguished_name = req_distinguished_name
+x509_extensions = v3_ca
+
+[ req_distinguished_name ]
+C = #{data['country']}
+ST = #{data['state']}
+L = #{data['city']}
+O = #{data['company']}
+OU = #{data['section']}
+CN = #{data['hostname']}
+
+[ v3_ca ]
+basicConstraints=CA:FALSE
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alternate_names
+
+[ alternate_names ]
+DNS.1 = #{data['hostname']}"
+        end
+
         execute "generating #{file}" do
             command "
-    answers() {
-            echo #{data['country']}
-            echo #{data['state']}
-            echo #{data['city']}
-            echo #{data['company']}
-            echo #{data['section']}
-            echo #{data['hostname']}
-            echo #{data['contact']}
-    }
-
-    answers | /usr/bin/openssl req -newkey rsa:#{bits} -keyout #{key} -nodes -x509 -days #{days} -out #{cert}"
+/usr/bin/openssl req -x509 \
+    -sha256                \
+    -newkey rsa:#{bits}    \
+    -keyout #{key}         \
+    -days #{days}          \
+    -config /tmp/tls.conf  \
+    -out #{cert}"
             creates cert
         end
 
