@@ -20,7 +20,6 @@ unless certs.nil? || certs.nil?
 [ req ]
 prompt = no
 default_bits = 2048
-default_keyfile = #{key}
 encrypt_key = no
 default_md = sha256
 distinguished_name = req_distinguished_name
