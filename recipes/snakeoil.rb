@@ -17,14 +17,16 @@ unless certs.nil? || certs.nil?
         file "#{file} TLS config" do
             path    "/tmp/tls.conf"
             content "
-[req]
-x509_extensions = v3_req
-distinguished_name = dn
-default_bits = 2048
+[ req ]
 prompt = no
+default_bits = 2048
+default_keyfile = #{key}
+encrypt_key = no
 default_md = sha256
+distinguished_name = req_distinguished_name
+x509_extensions = v3_ca
 
-[dn]
+[ req_distinguished_name ]
 C = #{data['country']}
 ST = #{data['state']}
 L = #{data['city']}
@@ -32,13 +34,14 @@ O = #{data['company']}
 OU = #{data['section']}
 CN = #{data['hostname']}
 
-[v3_req]
-authorityKeyIdentifier= keyid,issuer
-basicConstraints= CA:FALSE
-keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
-subjectAltName = @alt_names
+[ v3_ca ]
+basicConstraints=CA:FALSE
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alternate_names
 
-[alt_names]
+[ alternate_names ]
 DNS.1 = #{data['hostname']}"
         end
 
@@ -48,7 +51,6 @@ DNS.1 = #{data['hostname']}"
     -sha256                \
     -newkey rsa:#{bits}    \
     -keyout #{key}         \
-    -nodes                 \
     -days #{days}          \
     -config /tmp/tls.conf  \
     -out #{cert}"
