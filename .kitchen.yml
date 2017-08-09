@@ -19,8 +19,13 @@ suites:
     run_list:
     - recipe[cop_tls::dhparams]
     - recipe[cop_tls::snakeoil]
+    - recipe[cop_tls::install_certs]
     attributes:
         tls:
+            certs:
+                test.localhost.org:
+                    cert: 'certificate goes here'
+                    key: 'private key goes here'
             dhparams:
                 bits: 512
                 files:
