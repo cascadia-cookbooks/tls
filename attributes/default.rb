@@ -10,4 +10,5 @@ default['tls']['dhparams']['files'] = %W(
 )
 
 # initialize empty array
+default['tls']['certs'] = []
 default['tls']['snakeoil']['certs'] = []
