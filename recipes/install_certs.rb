@@ -5,9 +5,7 @@
 
 include_recipe 'cop_tls::common'
 
-certs = node['tls']['certs']
-
-unless certs.nil?
+unless node['tls']['certs'].nil?
     # NOTE: only merge when there are preexisting certs to be installed
     #       this should prevent certs being loaded and installed in development
     sensitive_info = begin
@@ -22,7 +20,7 @@ unless certs.nil?
         node.default['tls']['certs'] = node['tls']['certs'].merge(sensitive_info)
     end
 
-    certs.each do |file,data|
+    node['tls']['certs'].each do |file,data|
         if data['cert']
             file "#{node['tls']['cert_path']}/#{file}.crt" do
                 content data['cert']
